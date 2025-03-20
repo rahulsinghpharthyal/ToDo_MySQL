@@ -8,7 +8,7 @@ export const createTodoController = catchAsyncError(async (req, res, next) => {
   if (!title || !description)
     return next(new ErrorHandler("Title and Description are required!", 400));
   const [result] = await db.query(
-    "INSERT INTO todos (title, description, status) VALUES (?, ?, ?)",
+    "INSERT INTO todos (title, description, status, deleted_at) VALUES (?, ?, ?, NULL)",
     [title, description, status || "pending"]
   );
   return res
@@ -21,13 +21,55 @@ export const createTodoController = catchAsyncError(async (req, res, next) => {
 
 // Get all To-Dos
 export const getTodosController = catchAsyncError(async (req, res, next) => {
-    const [todos] = await db.query("SELECT * FROM todos");
+  const [todos] = await db.query("SELECT * FROM todos WHERE deleted_at IS NULL");
     console.log("this is all todos", todos);
     if (!todos || todos.length === 0) {
       return next(new ErrorHandler("No Task Found", 400));
   }
     return res.status(200).json({message: 'All Task', task: todos});
 });
+
+
+export const getTodoWithPagination = catchAsyncError(async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1; // Default page = 1
+  const limit = parseInt(req.query.limit) || 10; // Default limit = 10
+  const status = req.query.status || null; // Get status from query parameters
+
+  const pageNumber = parseInt(page, 10);
+  const limitNumber = parseInt(limit, 10);
+
+  const offset = (pageNumber - 1) * limitNumber;
+
+  let query = "SELECT * FROM todos WHERE deleted_at IS NULL";
+  let queryParams = [limitNumber, offset];
+
+  if (status) {
+    query += " AND status = ?";
+    queryParams.unshift(status); // Insert status at the beginning of the query parameters array
+  }
+
+  // Query to get paginated tasks with status filter
+  const [todos] = await db.query(query + " LIMIT ? OFFSET ?", queryParams);
+
+  if (!todos || todos.length === 0) {
+    return next(new ErrorHandler("No Tasks Found", 400));
+  }
+
+  // Query to get the total count of tasks with optional status filter
+  let countQuery = "SELECT COUNT(*) AS count FROM todos WHERE deleted_at IS NULL";
+  if (status) {
+    countQuery += " AND status = ?";
+  }
+
+  const [[{ count }]] = await db.query(countQuery, status ? [status] : []);
+
+  return res.status(200).json({
+    message: 'All Tasks',
+    task: todos,
+    totalCount: count, // Return the total count for pagination
+  });
+});
+
 
 
 //   Update To-Do
@@ -72,6 +114,8 @@ export const deleteTodoById = catchAsyncError(async (req, res, next) => {
   const [existingTask] = await db.query("SELECT * FROM todos WHERE id = ?", [id]);
   if (existingTask.length === 0)
     return next(new ErrorHandler("Task is not Found", 400));
-  const deleteTask = await db.query("DELETE FROM todos WHERE id = ? ", [id]);
+  // const deleteTask = await db.query("DELETE FROM todos WHERE id = ? ", [id]);
+  const [deleteTaslk] = await db.query("UPDATE todos SET deleted_at = NOW() WHERE id = ?", [id])
+  console.log(deleteTaslk)
   return res.status(200).json({ message: "Todo deleted successfully" });
 });

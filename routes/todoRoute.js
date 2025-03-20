@@ -3,6 +3,7 @@ import {
   createTodoController,
   deleteTodoById,
   getTodosController,
+  getTodoWithPagination,
   updateTodoById
 } from "../controllers/todoController.js";
 
@@ -12,6 +13,6 @@ router.post("/create-todo", createTodoController);
 router.get("/all-todos", getTodosController);
 router.put("/update-todo/:id", updateTodoById);
 router.delete("/delete-todo/:id", deleteTodoById);
-// router.get("/:id", getTodoByIdController);
+router.get("/get-todos-pagination", getTodoWithPagination);
 
 export default router;
