@@ -58,7 +58,8 @@ Ensure that you have the following software installed on your machine:
    npm start
    ```
 
-6. The server will be running on `http://localhost:8000`.
+6. The server will be running on `http://localhost:8000`. in Local
+  and the hosted will be running on `https://todo-mysql-f5m6.onrender.com`.
 
 ## API Endpoints
 
