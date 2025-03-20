@@ -127,7 +127,7 @@ Ensure that you have the following software installed on your machine:
 
 ### 4. Delete Todo
 
-- **Endpoint**: `DELETE /api/v1/stodos/delete-todo/:id`
+- **Endpoint**: `DELETE /api/v1/todos/delete-todo/:id`
 - **Description**: Deletes a todo task by its ID.
 - **Response**:
   ```json
@@ -135,6 +135,92 @@ Ensure that you have the following software installed on your machine:
     "message": "Todo deleted successfully"
   }
   ```
+
+### 4. get Todo using pagination and filter
+
+- **Endpoint**: `DELETE /api/v1/todos/get-todos-pagination?page=1&limit=10&status=pending
+- **Description**: Deletes a todo task by its ID.
+- **Response**:
+  ```json get the task from page to limit and then if status is their so then the apply the filter 
+  {
+    "message": "All Tasks",
+    "task": [
+        {
+            "id": 6,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 7,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 8,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 9,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 10,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 11,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 12,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 13,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 14,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        },
+        {
+            "id": 15,
+            "title": "task 1",
+            "description": "this is task 1",
+            "status": "pending",
+            "deleted_at": null
+        }
+    ],
+    "totalCount": 26
+}
+  ```
+
+
 
 ## Technologies Used
 

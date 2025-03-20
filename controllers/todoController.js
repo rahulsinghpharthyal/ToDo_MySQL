@@ -71,7 +71,6 @@ export const getTodoWithPagination = catchAsyncError(async (req, res, next) => {
 });
 
 
-
 //   Update To-Do
 export const updateTodoById = catchAsyncError(async (req, res, next) => {
     const { title, description, status } = req.body;
